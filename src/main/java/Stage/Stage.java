@@ -1,4 +1,4 @@
-package Stage;
+package main.java.Stage;
 
 public abstract class Stage {
     Stage nextStage;

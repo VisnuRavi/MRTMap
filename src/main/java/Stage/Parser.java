@@ -1,4 +1,4 @@
-package Stage;
+package main.java.Stage;
 
 public class Parser extends Stage {
     private static Parser parser;

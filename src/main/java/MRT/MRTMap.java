@@ -1,4 +1,4 @@
-package MRT;
+package main.java.MRT;
 
 import java.io.File;
 import java.util.ArrayList;

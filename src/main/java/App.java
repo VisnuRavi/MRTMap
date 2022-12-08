@@ -1,6 +1,8 @@
-import MRT.MRTMap;
-import Stage.Parser;
-import Stage.Stage;
+package main.java;
+
+import main.java.MRT.MRTMap;
+import main.java.Stage.Parser;
+import main.java.Stage.Stage;
 
 import java.io.File;
 import java.util.Scanner;
