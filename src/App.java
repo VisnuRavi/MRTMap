@@ -1,9 +1,13 @@
+import MRT.MRTMap;
 import Stage.Parser;
 import Stage.Stage;
 
+import java.io.File;
 import java.util.Scanner;
 
 public class App {
+    String mrtDataPath = "/home/visnu/Documents/MRTPath/input/data.csv";
+
     public void run() {
         initialiseMRTMap();
         String input = getInput();
@@ -22,6 +26,8 @@ public class App {
     }
 
     private void initialiseMRTMap() {
-        //get data from file and populate the stations and mrtmap
+        File file = new File(mrtDataPath);
+        MRTMap mrtMap = MRTMap.getInstance();
+        mrtMap.initStations(file);
     }
 }

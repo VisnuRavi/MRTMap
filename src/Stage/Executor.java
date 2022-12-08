@@ -1,5 +1,7 @@
 package Stage;
 
+import MRT.MRTMap;
+
 public class Executor extends Stage {
     private String firstStation;
     private String secondStation;
@@ -21,6 +23,6 @@ public class Executor extends Stage {
     }
 
     public void execute() {
-        //call MRTMap pathFinder method
+        MRTMap.getInstance().findShortestPath(firstStation, secondStation);
     }
 }
