@@ -1,10 +1,11 @@
 package Stage;
 
 import MRT.MRTMap;
+import MRT.Station;
 
 public class Executor extends Stage {
-    private String firstStation;
-    private String secondStation;
+    private Station firstStation;
+    private Station secondStation;
 
     private static Executor executor;
 
@@ -17,7 +18,7 @@ public class Executor extends Stage {
         return executor;
     }
 
-    public void setStations(String firstStation, String secondStation) {
+    public void setStations(Station firstStation, Station secondStation) {
         this.firstStation = firstStation;
         this.secondStation = secondStation;
     }

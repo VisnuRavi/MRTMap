@@ -6,8 +6,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 public class MRTMap implements PathFinder {
     static Map<Station, List<Pair>> adjList;
@@ -105,7 +108,75 @@ public class MRTMap implements PathFinder {
         }
     }
 
-    public void findShortestPath(String firstStation, String secondStation) {
+    public void findShortestPath(Station firstStation, Station secondStation) {
+        Map<Station, Station> parent = new HashMap<>();
+        Map<Station, Pair> shortestPathEst = new HashMap<>();
+        //Set<Station> solved = new HashSet<>();
+        PriorityQueue<Pair> shortestPathPQ = new PriorityQueue<>(
+                (p1, p2) -> {
+                    if (p1.duration < p2.duration) {
+                        return -1;
+                    } else if (p1.duration == p2.duration) {
+                        return 0;
+                    } else {
+                        return 1;
+                    }
+                }
+        );
+        //init the PQ
+        for (Map.Entry<Station, List<Pair>> set : adjList.entrySet()) {
+            Pair p = null;
+            if (set.getKey().equals(firstStation)) {
+                p = new Pair(set.getKey(), 0);
+            } else {
+                p = new Pair(set.getKey(), Integer.MAX_VALUE);
+            }
+            shortestPathPQ.add(p);
+            shortestPathEst.put(set.getKey(), p);
+        }
 
+        //Station prev = null;
+        while (!shortestPathPQ.isEmpty()) {
+            Pair p = shortestPathPQ.poll();
+            Station shortestStation = p.station;
+            int shortestDuration = p.duration;
+            //solved.add(shortestStation);
+            //parent.put(shortestStation, prev);
+
+            List<Pair> adj = adjList.get(shortestStation);
+            for (int i=0; i<adj.size(); i++) {
+                Pair adjPair = adj.get(i);
+                Station adjStn = adjPair.station;
+                int adjDur = adjPair.duration;
+
+                Pair adjCurrPair = shortestPathEst.get(adjStn);
+                int adjCurrDur = adjCurrPair.duration;
+                if (shortestDuration + adjDur < adjCurrDur) {
+                    shortestPathPQ.remove(adjCurrPair);
+                    Pair relaxedP = new Pair(adjStn, shortestDuration + adjDur);
+                    shortestPathEst.put(adjStn, relaxedP);
+                    shortestPathPQ.add(relaxedP);
+                    parent.put(adjStn, shortestStation);
+                }
+            }
+
+            //prev = shortestStation
+        }
+
+        int totalShortestDuration = shortestPathEst.get(secondStation).duration;
+        List<Station> path = new ArrayList<>();
+        Station currStation = null;
+        Station parentStation = secondStation;
+        while (!currStation.equals(firstStation)) {
+            path.add(parentStation);
+            currStation = parentStation;
+            parentStation = parent.get(currStation);
+        }
+
+        System.out.println("Total duration: " + totalShortestDuration);
+        for (int j=path.size()-1; j>=0; j++) {
+            Station stn = path.get(j);
+            System.out.println("Station: " + stn.name + " line: " + stn.line);
+        }
     }
 }

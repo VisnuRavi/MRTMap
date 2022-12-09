@@ -1,5 +1,8 @@
 package Stage;
 
+import MRT.Station;
+import MRT.StationBuilder;
+
 public class Parser extends Stage {
     private static Parser parser;
 
@@ -22,8 +25,12 @@ public class Parser extends Stage {
 
     public void execute() {
         String[] splitInput = input.split(",");
-        String firstStation = splitInput[0];
-        String secondStation = splitInput[1];
+        String firstStationName = splitInput[0];
+        String firstStationLine = splitInput[1];
+        String secondStationName = splitInput[2];
+        String secondStationLine = splitInput[3];
+        Station firstStation = new StationBuilder().setLine(firstStationLine).setName(firstStationName).getStation();
+        Station secondStation = new StationBuilder().setLine(secondStationLine).setName(secondStationName).getStation();
         Executor.getInstance().setStations(firstStation, secondStation);
         this.nextStage.proceed();
     }

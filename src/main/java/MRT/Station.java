@@ -11,4 +11,11 @@ public class Station {
         this.line = line;
         this.duration = duration;
     }
+
+    public boolean equals(Station s) {
+        if (s.name == this.name && s.line == this.line && s.duration == this.duration) {
+            return true;
+        }
+        return false;
+    }
 }
