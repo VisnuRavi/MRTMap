@@ -1,6 +1,6 @@
-package main.java.Stage;
+package Stage;
 
-import main.java.MRT.MRTMap;
+import MRT.MRTMap;
 
 public class Executor extends Stage {
     private String firstStation;

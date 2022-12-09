@@ -1,5 +1,6 @@
-package main.java.MRT;
+package MRT;
 
+//station helps with the hashing of the obj
 public class Station {
     String name;
     String line;

@@ -1,4 +1,4 @@
-package main.java.MRT;
+package MRT;
 
 public class StationBuilder {
     String name;
