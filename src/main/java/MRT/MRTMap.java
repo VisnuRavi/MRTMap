@@ -60,9 +60,9 @@ public class MRTMap implements PathFinder {
                     } else {
                         next = null;
                     }
+                    addToAdjList(prev, curr, next);
+                    addToNameToStations(curr);
                 }
-                addToAdjList(prev, curr, next);
-                addToNameToStations(curr);
             }
             fileReader.close();
             csvReader.close();
@@ -168,11 +168,19 @@ public class MRTMap implements PathFinder {
             }
         }
 
-        int totalShortestDuration = shortestPathEst.get(secondStation).duration;
+        //need to map to exact same obj
+        Station actualSecondStation = null;
+        List<Station> secondNameStations = nameToStations.get(secondStation.name);
+        for (int i=0; i<secondNameStations.size(); i++) {
+            if (secondStation.equals(secondNameStations.get(i))) {
+                actualSecondStation = secondNameStations.get(i);
+            }
+        }
+        int totalShortestDuration = shortestPathEst.get(actualSecondStation).duration;
         List<Station> path = new ArrayList<>();
         Station currStation = null;
-        Station parentStation = secondStation;
-        while (!currStation.equals(firstStation)) {
+        Station parentStation = actualSecondStation;
+        while (currStation == null || !currStation.equals(firstStation)) {
             path.add(parentStation);
             currStation = parentStation;
             parentStation = parent.get(currStation);

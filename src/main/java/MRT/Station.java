@@ -13,7 +13,7 @@ public class Station {
     }
 
     public boolean equals(Station s) {
-        if (s.name == this.name && s.line == this.line) {
+        if (s.name.equals(this.name) && s.line.equals(this.line)) {
             return true;
         }
         return false;
