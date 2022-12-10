@@ -6,20 +6,27 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.Set;
 
 public class MRTMap implements PathFinder {
+    //map each key stn to a list of pair of stn and the weight that links to key station
     static Map<Station, List<Pair>> adjList;
-
+    //map each stn name to the list of stations that have the same name(but different lines)
     static Map<String, List<Station>> nameToStations;
 
     private MRTMap() {}
 
     private static MRTMap mrtmap;
+
+    public Map<Station, List<Pair>> getAdjList() {
+        return adjList;
+    }
+
+    public Map<String, List<Station>> getNameToStations() {
+        return nameToStations;
+    }
 
     public static MRTMap getInstance() {
         if (mrtmap == null) {
@@ -65,13 +72,16 @@ public class MRTMap implements PathFinder {
     }
 
     public Station getNextStation(String stationLine, String[] nextLine, int index) {
+        if (index >= nextLine.length) {
+            return null;
+        }
         String nextName = nextLine[index];
         int nextDuration = Integer.parseInt(nextLine[index + 1]);
-        StationBuilder nextStationB = new StationBuilder()
+        return new StationBuilder()
                 .setName(nextName)
                 .setDuration(nextDuration)
-                .setLine(stationLine);
-        return nextStationB.getStation();
+                .setLine(stationLine)
+                .getStation();
     }
 
     public void addToAdjList(Station prev, Station curr, Station next) {
@@ -88,6 +98,7 @@ public class MRTMap implements PathFinder {
         adjList.put(curr, adj);
     }
 
+    //if have 1 station name linked to many lines
     public void addToNameToStations(Station curr) {
         String name = curr.name;
         if (nameToStations.containsKey(name)) {
@@ -111,7 +122,6 @@ public class MRTMap implements PathFinder {
     public void findShortestPath(Station firstStation, Station secondStation) {
         Map<Station, Station> parent = new HashMap<>();
         Map<Station, Pair> shortestPathEst = new HashMap<>();
-        //Set<Station> solved = new HashSet<>();
         PriorityQueue<Pair> shortestPathPQ = new PriorityQueue<>(
                 (p1, p2) -> {
                     if (p1.duration < p2.duration) {
@@ -135,13 +145,10 @@ public class MRTMap implements PathFinder {
             shortestPathEst.put(set.getKey(), p);
         }
 
-        //Station prev = null;
         while (!shortestPathPQ.isEmpty()) {
             Pair p = shortestPathPQ.poll();
             Station shortestStation = p.station;
             int shortestDuration = p.duration;
-            //solved.add(shortestStation);
-            //parent.put(shortestStation, prev);
 
             List<Pair> adj = adjList.get(shortestStation);
             for (int i=0; i<adj.size(); i++) {
@@ -159,8 +166,6 @@ public class MRTMap implements PathFinder {
                     parent.put(adjStn, shortestStation);
                 }
             }
-
-            //prev = shortestStation
         }
 
         int totalShortestDuration = shortestPathEst.get(secondStation).duration;
@@ -174,7 +179,7 @@ public class MRTMap implements PathFinder {
         }
 
         System.out.println("Total duration: " + totalShortestDuration);
-        for (int j=path.size()-1; j>=0; j++) {
+        for (int j=path.size()-1; j>=0; j--) {
             Station stn = path.get(j);
             System.out.println("Station: " + stn.name + " line: " + stn.line);
         }

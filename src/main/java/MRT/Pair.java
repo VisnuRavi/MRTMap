@@ -8,4 +8,8 @@ public class Pair {
         this.station = station;
         this.duration = duration;
     }
+
+    public boolean equals(Pair p) {
+        return p.station.equals(this.station) && p.duration == this.duration;
+    }
 }

@@ -1,12 +1,11 @@
 import MRT.MRTMap;
 import Stage.Parser;
-import Stage.Stage;
 
 import java.io.File;
 import java.util.Scanner;
 
 public class App {
-    String mrtDataPath = "/home/visnu/Documents/MRTPath/input/data.csv";
+    String mrtDataPath = "/home/visnu/Documents/MRTPath/src/main/resources/data.csv";
 
     public void run() {
         initialiseMRTMap();

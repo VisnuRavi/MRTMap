@@ -29,9 +29,13 @@ public class Parser extends Stage {
         String firstStationLine = splitInput[1];
         String secondStationName = splitInput[2];
         String secondStationLine = splitInput[3];
-        Station firstStation = new StationBuilder().setLine(firstStationLine).setName(firstStationName).getStation();
-        Station secondStation = new StationBuilder().setLine(secondStationLine).setName(secondStationName).getStation();
+        Station firstStation = getStation(firstStationName, firstStationLine);
+        Station secondStation = getStation(secondStationName, secondStationLine);
         Executor.getInstance().setStations(firstStation, secondStation);
         this.nextStage.proceed();
+    }
+
+    public Station getStation(String name, String line) {
+        return new StationBuilder().setLine(line).setName(name).getStation();
     }
 }
